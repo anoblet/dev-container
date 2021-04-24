@@ -1,0 +1,27 @@
+version: '3'
+
+services: 
+  application:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VARIANT: "3.13"
+    command: sleep infinity
+    ports:
+      - 0.0.0.0:80:8080
+    volumes:
+      - ..:/workspace:cached
+  database:
+    environment:
+      MYSQL_ROOT_PASSWORD: mariadb
+      MYSQL_DATABASE: wordpress_cxl_wpstarter
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: mariadb
+
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    volumes:
+      - ../mysql-data:/var/lib/mysql:cached
